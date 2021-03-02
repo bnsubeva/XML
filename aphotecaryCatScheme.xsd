@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="aphotecary">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="aphotecaryList" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="product" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Information">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="name" type="xs:string"/>
+                                                    <xs:element name="price" type="xs:integer" />
+													<xs:element name="description" type="xs:string"/>
+													<xs:element name="type" type="xs:string"/>
+													<xs:element name="id" type="xs:integer"/>
+													<xs:element name="typeId" type="xs:integer"/>
+                                                    <xs:element name="composition" type="xs:string"/>
+                                                    <xs:element name="instructions" type="xs:string"/>
+													<xs:element name="comments" type="xs:string" minOccurs="0"/>
+													<xs:element name="quantity" type="xs:integer"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+				<xs:element name="typeList" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="typeInfo" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+										<xs:element name="typeName" type="xs:string"/>
+                                        <xs:element name="type" maxOccurs="1">
+                                             <xs:complexType>
+												<xs:simpleContent>
+												  <xs:extension base="xs:string">
+													<xs:attribute type="xs:string" name="typeRef" />
+													<xs:attribute type="xs:integer" name="typeIdRef" />
+												  </xs:extension>
+												</xs:simpleContent>
+											 </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+	<xs:key name="typeKey">
+            <xs:selector xpath="aphotecary/aphotecaryList/product/Information"/>
+            <xs:field xpath="type"/>
+            <xs:field xpath="typeId"/>
+        </xs:key>
+        <xs:keyref name="typeRef" refer="typeKey">
+            <xs:selector xpath="aphotecary/typeList/typeInfo/type"/>
+            <xs:field xpath="@typeRef"/>
+            <xs:field xpath="@typeIdRef"/>
+        </xs:keyref>
+    </xs:element>
+</xs:schema>
